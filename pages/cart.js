@@ -9,9 +9,9 @@ export default function Cart() {
     }
 
     return (
-        <>
+        <div className="p-4">
             <ActionCard navigate={navigateToPayment} buttonText="Checkout"/>
             <h3>Welcome to Cart</h3>
-        </>
+        </div>
     )
   }

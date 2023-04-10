@@ -10,7 +10,7 @@ export default function Products() {
     }
 
     return (
-        <div>
+        <div className="p-4">
             <ActionCard navigate={navigateToCart} buttonText="View Cart" />
             <ProductList />
         </div>
