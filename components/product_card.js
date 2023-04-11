@@ -1,8 +1,15 @@
 import Image from "next/image"
+import { useState } from "react"
 
 export default function ProductCard({product}) {
+    const [selected, setSelected] = useState(false)
+    
+    const toggleSelection = () => {
+      setSelected(!selected)
+    }
+    
     return (
-      <main className="p-1 border rounded-md">
+      <main onClick={toggleSelection} className={`p-1 border rounded-md ${selected ? 'bg-orange-300': ''}`}>
         <Image
             className="rounded-md aspect-square object-cover" 
             src={product.photoUrl}
