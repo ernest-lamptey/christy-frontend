@@ -2,7 +2,6 @@ import ProductCard from "./product_card";
 import useSWR from 'swr';
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
-//if item is already in the list make sure it is highlighted on load
 
 export default function ProductList({addOrRemoveItems}) {
     const { data, error } = useSWR('http://localhost:5000/api/v1/items', fetcher);
