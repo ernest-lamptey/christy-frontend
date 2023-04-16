@@ -12,7 +12,7 @@ export default function ProductList({addOrRemoveItems}) {
     return (
         <>
             <h2 className="text-xl font-bold my-2">Shop Vegetables</h2>
-            <main className="m-auto grid grid-cols-2 gap-2 max-h-[70vh] overflow-scroll">
+            <main className="m-auto grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-2 max-h-[70vh] overflow-y-scroll">
                 {data && data.map(item => (
                     <ProductCard key={item._id} product={item} addOrRemoveItem={addOrRemoveItems} />
                 ))}
