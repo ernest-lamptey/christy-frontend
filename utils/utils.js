@@ -1,4 +1,4 @@
-export default function addOrRemoveOrder (arr, elem) {
+export function addOrRemoveOrder (arr, elem) {
     const index = arr.indexOf(elem);
     if (index !== -1) {
       arr.splice(index, 1);
@@ -6,4 +6,8 @@ export default function addOrRemoveOrder (arr, elem) {
       arr.push(elem);
     }
     return arr;
+}
+
+export function capitalize (text) {
+  return text.toLowerCase().replace(/\b\w/g, s => s.toUpperCase())
 }

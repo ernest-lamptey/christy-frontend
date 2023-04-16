@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation"
 import { useContext, useState } from "react"
 import { OrderContext } from "@/contexts/OrderContext"
 import axios from "axios"
+import { capitalize } from "@/utils/utils"
 
 export default function Cart() {
     const { orders, setOrders } = useContext(OrderContext)
@@ -10,6 +11,10 @@ export default function Cart() {
 
     const orderToFormData = (order) => {
         return {_id: order._id, name: order.name, purchaseAmount: order.value}
+    }
+
+    const handleGoBack = () => {
+        router.back()
     }
 
     const navigateToPayment = () => {
@@ -50,9 +55,15 @@ export default function Cart() {
 
     return (
         <div className="p-4">
-            <ActionCard navigate={navigateToPayment} buttonText="Checkout"/>
-            <div className="max-w-md mx-auto my-8 max-h-[65vh] overflow-scroll">
-                <form  className="shadow-md rounded">
+            <ActionCard navigate={navigateToPayment}
+            goBack={handleGoBack}
+            buttonText="Checkout" 
+            step1="Tap amounts to edit" 
+            step2="Checkout when ready" />
+            <h2 className="text-xl font-bold my-2">Your Order List</h2>
+
+            <div className="max-w-md mx-auto mb-8 max-h-[70vh] rounded-md overflow-scroll">
+                <form  className="shadow-md rounded-md">
                     <table className="text-left text-lg w-full">
                         <thead className="bg-orange-100" >
                             <tr className="border-b">
@@ -64,7 +75,7 @@ export default function Cart() {
                         <tbody className="text-lg">
                             {orders && orders.map((order) => (
                             <tr className="border-b" key={order._id}>
-                                <td className="p-2">{order.name}</td>
+                                <td className="p-2">{capitalize(order.name)}</td>
                                 <td className="p-2">{order.price.toFixed(2)}</td>
                                 <td className="p-2">
                                 <input
@@ -85,7 +96,7 @@ export default function Cart() {
                                     Total: 
                                 </td>
                                 <td className="py-2 font-medium">
-                                    {formData.reduce((acc, curr) => acc + Number(curr.purchaseAmount), 0).toFixed(2)}
+                                   GHS {formData.reduce((acc, curr) => acc + Number(curr.purchaseAmount), 0).toFixed(2)}
                                 </td>
                             </tr>
                         </tfoot>

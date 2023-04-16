@@ -3,7 +3,7 @@ import ProductList from "@/components/product_list";
 import { useRouter } from 'next/navigation';
 import { useContext } from "react";
 import { OrderContext } from "@/contexts/OrderContext";
-import addOrRemoveOrder from "@/utils/utils";
+import { addOrRemoveOrder } from "@/utils/utils";
 
 export default function Products() {
     const { orders, setOrders } = useContext(OrderContext)
@@ -11,6 +11,10 @@ export default function Products() {
 
     const navigateToCart = () => {
         router.push('/cart')
+    }
+
+    const handleGoBack = () => {
+        router.back()
     }
 
     function addOrRemove(item) {
@@ -21,7 +25,11 @@ export default function Products() {
 
     return (
         <div className="p-4">
-            <ActionCard navigate={navigateToCart} buttonText="View Cart" />
+            <ActionCard navigate={navigateToCart} 
+            goBack={handleGoBack}
+            buttonText="View Cart" 
+            step1="Add your items..."
+            step2="Hit the cart to continue" />
             <ProductList addOrRemoveItems={addOrRemove} />
         </div>
     )
