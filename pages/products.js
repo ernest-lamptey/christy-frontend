@@ -4,12 +4,18 @@ import { useRouter } from 'next/navigation';
 import { useContext } from "react";
 import { OrderContext } from "@/contexts/OrderContext";
 import { addOrRemoveOrder } from "@/utils/utils";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Products() {
     const { orders, setOrders } = useContext(OrderContext)
     const router = useRouter()
 
     const navigateToCart = () => {
+        if (orders.length < 1) {
+            toast("No items selected")
+            return
+        }
         router.push('/cart')
     }
 
@@ -31,6 +37,7 @@ export default function Products() {
             step1="Add your items..."
             step2="Hit the cart to continue" />
             <ProductList addOrRemoveItems={addOrRemove} />
+            <ToastContainer />
         </div>
     )
   }

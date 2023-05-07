@@ -4,6 +4,8 @@ import { useContext, useState } from "react"
 import { OrderContext } from "@/contexts/OrderContext"
 import axios from "axios"
 import { capitalize } from "@/utils/utils"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Cart() {
     const { orders, setOrders } = useContext(OrderContext)
@@ -18,7 +20,25 @@ export default function Cart() {
     }
 
     const navigateToPayment = () => {
-        console.log(formData)
+        if (formData.length < 1) {
+            toast("Order list cannot be empty")
+            return
+        }
+        createOrder()
+    }
+
+    const [formData, setFormData] = useState(() => {
+        return orders.map(order => {
+            order.value = order.price;
+            return orderToFormData(order)
+        })
+    });
+
+    //when one navigates back and forth the order is repeatedly created
+    //i can store all orders the user has made in local storage and delete once payment has been made
+    //if there's an order that hasn't been paid for we don't allow the user to create a new order
+    //we can give the user the option to delete orders that they don't want anymore
+    const createOrder = () => {
         axios.post('http://localhost:5000/api/v1/orders', {items: formData})
             .then((response) => {
                 console.log(response.data)
@@ -32,19 +52,6 @@ export default function Cart() {
             .catch((error) => {
                 console.error(error);
             });
-    }
-
-    const [formData, setFormData] = useState(() => {
-        return orders.map(order => {
-            order.value = order.price;
-            return orderToFormData(order)
-        })
-    });
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log(formData)
-        // Submit the form data here to create order
     };
 
     const handleInputChange = (event, order) => {
@@ -62,7 +69,7 @@ export default function Cart() {
             step2="Checkout when ready" />
             <h2 className="text-xl font-bold my-2">Your Order List</h2>
 
-            <div className="max-w-md mx-auto mb-8 max-h-[70vh] rounded-md overflow-scroll">
+            <div className="max-w-md mx-auto mb-8 max-h-[70vh] rounded-md overflow-auto">
                 <form  className="shadow-md rounded-md">
                     <table className="text-left text-lg w-full">
                         <thead className="bg-orange-100" >
@@ -103,6 +110,7 @@ export default function Cart() {
                     </table>
                 </form>
             </div>
+            <ToastContainer />
         </div>
     )
   }
