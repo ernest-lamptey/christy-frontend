@@ -1,36 +1,22 @@
-import useSWR from 'swr';
-
-const fetcher = (url) => fetch(url).then((res) => res.json());
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 
 export default function Admin() {
-  const { data, error } = useSWR('http://localhost:5000/api/v1/orders', fetcher);
-    
-  if (error) return <div>failed to load</div>;
-  if (!data) return <div>loading...</div>;
+  const [password, setPassword] = useState('')
+  const router = useRouter()
+
+    const login = () => {
+      console.log(password)
+      router.push('/admin/dashboard')
+    }
 
     return (
-      <main className="flex flex-col gap-8 items-center justify-center min-h-screen bg-orange-100">
-        <h1 className="text-4xl font-bold">Foodie Express Admin</h1>
-          <table className="text-left text-lg w-full">
-              <thead className="bg-orange-100" >
-                  <tr className="border-b">
-                  <th className="p-2">Id</th>
-                  <th className="p-2">Payment Status</th>
-                  <th className="p-2">Order Status</th>
-                  <th className="p-2">Total Amount</th>
-                  </tr>
-              </thead>
-              <tbody className="text-lg">
-                  {data && data.map((order) => (
-                  <tr className="border-b" key={order._id}>
-                      <td className="p-2">{order._id}</td>
-                      <td className="p-2">{order.paymentStatus}</td>
-                      <td className="p-2">{order.orderStatus}</td>
-                      <td className="p-2">{order.totalAmount.toFixed(2)}</td>
-                  </tr>
-                  ))}
-              </tbody>
-          </table>
+      <main className="flex items-center justify-center min-h-screen bg-orange-50">
+        <div className="w-72 flex-col justify-center">
+          <label className="text-semibold">Enter admin password</label>
+          <input onChange={(e) => setPassword(e.target.value)} className="h-10 w-full rounded-md p-2" type="password"/>
+          <button onClick={login} className="h-10 w-full my-2 rounded-md font-semibold bg-orange-200 hover:bg-orange-300">Sign In</button>
+        </div>
       </main>
     )
   }
