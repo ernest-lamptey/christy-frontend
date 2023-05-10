@@ -11,7 +11,7 @@ export default function Admin() {
     }
 
     return (
-      <main className="flex items-center justify-center min-h-screen bg-orange-50">
+      <main className="flex items-center justify-center min-h-screen m-2 bg-orange-50">
         <div className="w-72 flex-col justify-center">
           <label className="text-semibold">Enter admin password</label>
           <input onChange={(e) => setPassword(e.target.value)} className="h-10 w-full rounded-md p-2" type="password"/>

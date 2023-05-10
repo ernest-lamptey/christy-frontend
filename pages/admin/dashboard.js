@@ -1,26 +1,41 @@
 import useSWR from 'swr'
 import { useState } from "react"
+import axios from 'axios'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/router';
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
 export default function Dashboard() {
-  const { data, error } = useSWR('http://localhost:5000/api/v1/orders', fetcher)
+  const { data, error } = useSWR('http://localhost:5000/api/v1/admin/orders', fetcher)
   const [searchQuery, setSearchQuery] = useState('')
   const [paymentStatusFilter, setPaymentStatusFilter] = useState('')
   const [orderStatusFilter, setOrderStatusFilter] = useState('')
+  const router = useRouter();
   const [selectedOrderStatus, setSelectedOrderStatus] = useState('')
 
   const handleOrderStatusChange = (e, orderId) => {
-    //set order status to new value
     const newStatus = e.target.value
-    console.log(`Order ${orderId} status changed to ${newStatus}`)
+    console.log(newStatus)
+    axios.put('http://localhost:5000/api/v1/admin/order', {orderId: orderId, orderStatus: newStatus})
+        .then((res) => {
+            toast.success('Order status updated')
+        })
+        .catch((error) => {
+            console.error(error)
+            toast.error('Failed to update order status')
+        })
+        // .finally(() => {
+        //     // router.reload()
+        // })
   }
     
   if (error) return <div>failed to load</div>;
   if (!data) return <div>loading...</div>;
 
     return (
-      <main className="flex flex-col gap-8 min-h-screen bg-orange-100">
+      <main className="flex flex-col gap-8 min-h-screen m-2 bg-orange-100">
         <h1 className="text-4xl font-bold">Foodie Express Admin</h1>
         <div className="flex gap-4 h-10">
             <div className="flex gap-2 items-center">
@@ -81,7 +96,7 @@ export default function Dashboard() {
                     <select
                         className="py-1 px-2 rounded-md border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200"
                         value={order.orderStatus}
-                        onChange={(e) => handleOrderStatusChange(e, order.id)}
+                        onChange={(e) => handleOrderStatusChange(e, order._id)}
                         >
                         <option value="">-- Select --</option>
                         <option value="pending" selected={order.orderStatus === 'pending'}>
@@ -100,6 +115,7 @@ export default function Dashboard() {
                 ))}
             </tbody>
         </table>
+        <ToastContainer />
       </main>
     )
   }
