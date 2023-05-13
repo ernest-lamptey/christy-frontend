@@ -90,7 +90,7 @@ export default function Dashboard() {
                 .filter((order) => order.orderStatus.toString().includes(orderStatusFilter))
                 .map((order) => (
                 <tr key={order._id} className="border-b">
-                    <td className="py-2 px-4">{order._id}</td>
+                    <td className="py-2 px-4">{order.email}</td>
                     <td className="py-2 px-4">{order.paymentStatus}</td>
                     <td className="py-2 px-4">
                     <select
