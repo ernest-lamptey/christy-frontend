@@ -9,6 +9,10 @@ body {
   margin: 0 auto;
 }
 
+.activeLink {
+  font-weight: bold;
+}
+
 /* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
